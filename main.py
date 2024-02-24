@@ -5,73 +5,18 @@
 
 Использовать регулярные выражения
 '''
-
 import re
-
-#Проверка числа по условию через регулярные выражения
-def check_num(gived_num, k):
-    if not re.match("^[0-9]+$", gived_num):
-        return False
-
-    if not re.match("^[13579]+$", gived_num[-1]):
-        return False
-
-    if len(gived_num) % 2 != 0:
-        return False
-
-    if len(gived_num) <= k:
-        return False
-
-    return True
-
-#Словарь цифр
-dc_cifr = {'0': 'ноль', '1': 'один', '2': 'два', '3': 'три', '4': 'четыре', '5': 'пять', '6': 'шесть', '7': 'семь', '8': 'восемь', '9': 'девять'}
-
-#Лист для вывода
-output_arr = []
-
-#Число К
-k = int(input('Число К: \n'))
-
-#Баффер
-gived_num = '1'
-
-file_name = "text.txt"
-
-try:
-    open(file_name, 'r')
-except:
-    print('Файл отсутствует в директории проекта')
-    exit()
-
-with open(file_name, 'r') as file:
-    while 1:
-        gived_num = file.readline().replace('\n', '')
-        if not gived_num:
-            #print('Файл закончился')
-            break
-
-        if (check_num(gived_num, k)):
-            output_arr.append(gived_num)
-
-#Вывод
-for output_num in output_arr:
-    print(output_num)
-
-    cifr = []
-
-    for i in output_num:
-        if i not in cifr:
-            cifr.append(i)
-
-    cifr = sorted(cifr, key= lambda x: int(x))
-
-    print('Количество использованных цифр:')
-    print(len(cifr))
-
-    cifr_propis = list(map(lambda x: dc_cifr[x], cifr))
-
-    print('Использованные цифры:')
-    print(*cifr_propis, sep=', ')
-
-    print('___________________\n')
+dc_cifr = {'0': 'ноль', '1': 'один', '2': 'два', '3': 'три', '4': 'четыре', '5': 'пять', '6': 'шесть', '7': 'семь', '8': 'восемь', '9': 'девять'} #Словарь цифр
+k = int(input("Число К = ")) #Число К
+buffer = '1' #Баффер
+with open("text.txt", 'r') as file:
+    while buffer:
+        buffer = file.readline().replace('\n', '')
+        if re.match("^[0-9]+$", buffer) and re.match("^[13579]+$", buffer[-1]) and (len(buffer) % 2 == 0) and (len(buffer) > k):
+            print('\n', buffer, sep=' ')
+            cifr = []
+            for i in buffer:
+                if i in dc_cifr:
+                    cifr.append(i)
+            cifr_propis = list(map(lambda x: dc_cifr[x], sorted(cifr, key=lambda x: int(x))))
+            print(' Количество использованных цифр:\n', len(cifr), '\n', 'Использованные цифры:\n', *cifr_propis, sep=' ')
