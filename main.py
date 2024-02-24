@@ -2,6 +2,8 @@
 Натуральные числа.
 Выводит на экран нечетные числа, содержащие четное количество цифр, превышающее К.
 Список используемых цифр (прописью) и их количество выводится отдельно.
+
+Использовать регулярные выражения
 '''
 
 import re
@@ -34,39 +36,23 @@ k = int(input('Число К: \n'))
 #Баффер
 gived_num = '1'
 
-#Выбор способа ввода чисел
-choice = input('Как вводятся лексемы:\n1) Вручную; \n2) Из файла; \n').lower()
+file_name = input('Имя файла:\n')
 
-#Ввод с клавиатуры
-if choice in ['1', 'one', 'hand', 'вручную']:
-    while gived_num:
-        gived_num = input('Число из потока: \n')
+try:
+    open(file_name, 'r')
+except:
+    print('Файл отсутствует в директории проекта')
+    exit()
 
-        if gived_num in ['0', '000', 'exit', 'stop', 'cancel', 'out']:
+with open(file_name, 'r') as file:
+    while 1:
+        gived_num = file.readline().replace('\n', '')
+        if not gived_num:
+            #print('Файл закончился')
             break
 
-        if(check_num(gived_num, k)):
+        if (check_num(gived_num, k)):
             output_arr.append(gived_num)
-
-#Ввод из файла
-elif choice in ['2', 'two', 'file', 'из файла']:
-    file_name = input('Имя файла:\n')
-
-    try:
-        open(file_name, 'r')
-    except:
-        print('Файл отсутствует в директории проекта')
-        exit()
-
-    with open(file_name, 'r') as file:
-        while 1:
-            gived_num = file.readline().replace('\n', '')
-            if not gived_num:
-                #print('Файл закончился')
-                break
-
-            if (check_num(gived_num, k)):
-                output_arr.append(gived_num)
 
 #Вывод
 for output_num in output_arr:
